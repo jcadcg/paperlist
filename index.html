@@ -26253,7 +26253,8 @@ function downloadRIS(idx, lang) {
   if (a.lastpage) ris.push('EP  - ' + a.lastpage);
   if (a.volume) ris.push('VL  - ' + a.volume);
   if (a.issue) ris.push('IS  - ' + a.issue);
-  if (a.abstract) ris.push('AB  - ' + a.abstract.replace(FMT_TAG_RE, '').replace(/\s+/g, ' ').trim());
+  const absRis = en ? (a.abstract_en || '') : (a.abstract || '');
+  if (absRis) ris.push('AB  - ' + absRis.replace(FMT_TAG_RE, '').replace(/\s+/g, ' ').trim());
   const kwRis = en ? (a.keywords_en || []) : (a.keywords || []);
   (kwRis || []).forEach(k => { if (k) ris.push('KW  - ' + k); });
   if (a.doi) ris.push('UR  - https://doi.org/' + a.doi);
@@ -26292,7 +26293,8 @@ function generateBibTeX(a, lang) {
   if (kwList && kwList.length) bib += 'keywords = {' + kwList.join(', ') + '},\r\n';
   if (a.doi) bib += 'url = {https://doi.org/' + a.doi + '},\r\n';
   if (a.doi) bib += 'doi = {' + a.doi + '},\r\n';
-  if (a.abstract) bib += 'abstract = {' + a.abstract + '}\r\n';
+  const absBib = en ? (a.abstract_en || '') : (a.abstract || '');
+  if (absBib) bib += 'abstract = {' + absBib.replace(FMT_TAG_RE, '').replace(/\s+/g, ' ').trim() + '}\r\n';
   bib += '}';
   return bib;
 }
